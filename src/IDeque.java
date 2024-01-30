@@ -1,13 +1,9 @@
-public interface IDeque<T> extends ICollection {
+public interface IDeque<T> extends IQueue<T> {
     T head();
 
     T tail();
 
     void putFront(T e);
-
-    void putBack(T e);
-
-    T popFront();
 
     T popBack();
 }

@@ -1,11 +1,13 @@
-public class LinkedList<T> implements IStack<T>, IDeque<T> {
+import java.util.Iterator;
+
+public class LinkedList<T> implements IStack<T>, IList<T> {
     private final Node sentinel = new Node();
     int size = 0;
 
     @Override
     public T head() {
         if (size == 0) {
-            throw new RuntimeException("The stack is empty");
+            throw new RuntimeException("The list is empty");
         }
 
         return sentinel.next.element;
@@ -14,7 +16,7 @@ public class LinkedList<T> implements IStack<T>, IDeque<T> {
     @Override
     public T tail() {
         if (size == 0) {
-            throw new RuntimeException("The stack is empty");
+            throw new RuntimeException("The list is empty");
         }
 
         return sentinel.prev.element;
@@ -47,7 +49,7 @@ public class LinkedList<T> implements IStack<T>, IDeque<T> {
     @Override
     public T popFront() {
         if (size == 0) {
-            throw new RuntimeException("The stack is empty");
+            throw new RuntimeException("The list is empty");
         }
 
         T last = head();
@@ -60,7 +62,7 @@ public class LinkedList<T> implements IStack<T>, IDeque<T> {
     @Override
     public T popBack() {
         if (size == 0) {
-            throw new RuntimeException("The stack is empty");
+            throw new RuntimeException("The list is empty");
         }
 
         T last = tail();
@@ -90,6 +92,21 @@ public class LinkedList<T> implements IStack<T>, IDeque<T> {
         return size;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("[");
+        for (T e : this) {
+            builder.append(e.toString()).append(", ");
+        }
+        builder.append("]");
+        return builder.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new MyIterator();
+    }
+
     private class Node {
         T element;
         Node next, prev;
@@ -97,6 +114,25 @@ public class LinkedList<T> implements IStack<T>, IDeque<T> {
         Node() {
             element = null;
             next = prev = this;
+        }
+    }
+
+    private class MyIterator implements Iterator<T> {
+        Node current;
+
+        public MyIterator() {
+            current = sentinel;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current.next != sentinel;
+        }
+
+        @Override
+        public T next() {
+            current = current.next;
+            return current.element;
         }
     }
 }
