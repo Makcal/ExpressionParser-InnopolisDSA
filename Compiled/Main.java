@@ -8,10 +8,7 @@ public final class Main {
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
         IList<Token> result = ShutingYard.process(ShutingYard.parse(line));
-        for (Token token : result) {
-            System.out.print(token + " ");
-        }
-                System.out.println();
+        System.out.println(ShutingYard.evaluate(result));
     }
 }
 
@@ -251,6 +248,28 @@ class ShutingYard {
             tokens.putBack(Token.parse(scanner.next()));
         }
         return tokens;
+    }
+
+    public static int evaluate(IList<Token> polish) {
+        IStack<Token> temp = new LinkedList<>();
+        for (Token token : polish) {
+            if (token.getType() == TokenType.NUMBER) {
+                temp.push(token);
+            }
+            else if (token instanceof IComputer<?,?>) {
+                @SuppressWarnings("unchecked")
+                IComputer<Integer, Integer> computer = (IComputer<Integer, Integer>) token;
+                IList<Integer> args = new LinkedList<>();
+                for (int i = 0; i < computer.argsNumber(); i++) {
+                    @SuppressWarnings("unchecked")
+                    int number = ((TokenNumber<Integer>) temp.pop()).getValue();
+                    args.putFront(number);
+                }
+                temp.push(new TokenNumber<>(computer.compute(args)));
+            }
+        }
+        //noinspection unchecked
+        return ((TokenNumber<Integer>) temp.pop()).getValue();
     }
 }
 

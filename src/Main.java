@@ -5,9 +5,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
         IList<Token> result = ShutingYard.process(ShutingYard.parse(line));
-        for (Token token : result) {
-            System.out.print(token + " ");
-        }
-        System.out.println();
+        System.out.println(ShutingYard.evaluate(result));
     }
 }
