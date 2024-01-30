@@ -316,7 +316,7 @@ class TokenNumber<T extends Number> extends Token {
 interface IComputer<R, T> {
     int argsNumber();
 
-    R compute(List<T> args);
+    R compute(IList<T> args);
 }
 
 class OperatorPrecedence {
@@ -360,8 +360,10 @@ abstract class TokenBinaryOperator<T> extends TokenOperator<T> {
     }
 
     @Override
-    public final T compute(List<T> args) {
-        return compute(args.get(0), args.get(1));
+    public final T compute(IList<T> args) {
+        T right = args.popBack();
+        T left = args.popBack();
+        return compute(left, right);
     }
 
     protected abstract T compute(T left, T right);
@@ -515,8 +517,10 @@ class TokenMin extends TokenFunction<Integer, Integer> {
     }
 
     @Override
-    public Integer compute(List<Integer> args) {
-        return Math.min(args.get(0), args.get(1));
+    public Integer compute(IList<Integer> args) {
+        Integer right = args.popBack();
+        Integer left = args.popBack();
+        return Math.min(left, right);
     }
 
     static TokenMin singleton = null;
@@ -543,8 +547,10 @@ class TokenMax extends TokenFunction<Integer, Integer> {
     }
 
     @Override
-    public Integer compute(List<Integer> args) {
-        return Math.max(args.get(0), args.get(1));
+    public Integer compute(IList<Integer> args) {
+        Integer right = args.popBack();
+        Integer left = args.popBack();
+        return Math.max(left, right);
     }
 
     static TokenMax singleton = null;
