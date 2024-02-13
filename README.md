@@ -1,4 +1,4 @@
-# ExpressionParser-InnopolisSSAD
+# ExpressionParser-InnopolisDSA
 
 You are given mathematical expressions specified in infix notation with two prefix functions (min
  and max
